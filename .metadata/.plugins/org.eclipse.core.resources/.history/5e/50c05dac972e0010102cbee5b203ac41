@@ -1,0 +1,151 @@
+package com.student.grade;
+
+import java.util.Scanner;
+
+public class StudentGradeAnalyzer {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Student Grade Analyzer");
+        System.out.println("----------------------");
+        
+        System.out.print("Enter number of students: ");
+        int numStudents = getValidInteger(scanner);
+        
+        String[] studentNames = new String[numStudents];
+        double[] studentGrades = new double[numStudents];
+        
+        collectStudentData(scanner, studentNames, studentGrades);
+        
+        double average = calculateAverage(studentGrades);
+        double highest = findHighestGrade(studentGrades);
+        double lowest = findLowestGrade(studentGrades);
+        
+        displayResults(studentNames, studentGrades, average, highest, lowest);
+        
+        scanner.close();
+    }
+    
+    private static void collectStudentData(Scanner scanner, String[] names, double[] grades) {
+        for (int i = 0; i < names.length; i++) {
+            System.out.printf("\nStudent #%d:\n", i + 1);
+            names[i] = getValidName(scanner);
+            grades[i] = getValidGrade(scanner);
+        }
+    }
+    
+    private static String getValidName(Scanner scanner) {
+        System.out.print("Enter student name: ");
+        String name;
+        while (true) {
+            name = scanner.nextLine().trim();
+            if (!name.isEmpty()) {
+                return name;
+            }
+            System.out.print("Name cannot be empty. Please enter a valid name: ");
+        }
+    }
+    
+    private static double getValidGrade(Scanner scanner) {
+        System.out.print("Enter student grade (0-100): ");
+        while (true) {
+            try {
+                double grade = Double.parseDouble(scanner.nextLine());
+                if (grade >= 0 && grade <= 100) {
+                    return grade;
+                }
+                System.out.print("Grade must be between 0 and 100. Please try again: ");
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a numeric grade: ");
+            }
+        }
+    }
+    
+    private static int getValidInteger(Scanner scanner) {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid number: ");
+            }
+        }
+    }
+    
+    private static double calculateAverage(double[] grades) {
+        double sum = 0;
+        for (double grade : grades) {
+            sum += grade;
+        }
+        return sum / grades.length;
+    }
+    
+    private static double findHighestGrade(double[] grades) {
+        double highest = grades[0];
+        for (double grade : grades) {
+            if (grade > highest) {
+                highest = grade;
+            }
+        }
+        return highest;
+    }
+    
+    private static double findLowestGrade(double[] grades) {
+        double lowest = grades[0];
+        for (double grade : grades) {
+            if (grade < lowest) {
+                lowest = grade;
+            }
+        }
+        return lowest;
+    }
+    
+    private static void displayResults(String[] names, double[] grades, 
+                                     double average, double highest, double lowest) {
+        // Create copies to avoid modifying original arrays
+        String[] sortedNames = names.clone();
+        double[] sortedGrades = grades.clone();
+        
+        sortStudentsByGrade(sortedNames, sortedGrades);
+        
+        System.out.println("\nStudent Grade Analysis (Sorted by Grade)");
+        System.out.println("----------------------------------------");
+        
+        // Display all students and their grades
+        for (int i = 0; i < sortedNames.length; i++) {
+            System.out.printf("%s: %.2f\n", sortedNames[i], sortedGrades[i]);
+        }
+        
+        System.out.println("\nStatistics:");
+        System.out.printf("Average Grade: %.2f\n", average);
+        System.out.printf("Highest Grade: %.2f (%s)\n", highest, names[findIndex(grades, highest)]);
+        System.out.printf("Lowest Grade: %.2f (%s)\n", lowest, names[findIndex(grades, lowest)]);
+    }
+    
+    private static void sortStudentsByGrade(String[] names, double[] grades) {
+        // Using bubble sort for simplicity
+        for (int i = 0; i < grades.length - 1; i++) {
+            for (int j = 0; j < grades.length - i - 1; j++) {
+                if (grades[j] < grades[j + 1]) {
+                    // Swap grades
+                    double tempGrade = grades[j];
+                    grades[j] = grades[j + 1];
+                    grades[j + 1] = tempGrade;
+                    
+                    // Swap names
+                    String tempName = names[j];
+                    names[j] = names[j + 1];
+                    names[j + 1] = tempName;
+                }
+            }
+        }
+    }
+    
+    private static int findIndex(double[] array, double value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}

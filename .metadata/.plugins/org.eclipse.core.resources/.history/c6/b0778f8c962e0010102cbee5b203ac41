@@ -1,0 +1,16 @@
+package com.student.grade;
+
+import java.util.Scanner;
+
+public class StudentGradeAnalyzer {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Student Grade Analyzer");
+        System.out.println("----------------------");
+        
+        // We'll add functionality here
+        
+        scanner.close();
+    }
+}
