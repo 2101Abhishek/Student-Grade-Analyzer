@@ -1,8 +1,5 @@
 # Student Grade Analyzer 📊
 
-![Java](https://img.shields.io/badge/Java-17-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-
 A Java console application for managing and analyzing student grades with robust input validation and statistical reporting.
 
 ## Features ✨
